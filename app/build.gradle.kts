@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "net.micode.notes"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "net.micode.notes"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -45,10 +45,11 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(files("C:\\Users\\twoone3\\dev\\notes2\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-osgi-4.5.14.jar"))
-    implementation(files("C:\\Users\\twoone3\\dev\\notes2\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-win-4.5.14.jar"))
-    implementation(files("C:\\Users\\twoone3\\dev\\notes2\\httpcomponents-client-4.5.14-bin\\lib\\httpcore-4.4.16.jar"))
-
+//    implementation(files("C:\\Users\\twoone3\\dev\\notes2\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-osgi-4.5.14.jar"))
+//    implementation(files("C:\\Users\\twoone3\\dev\\notes2\\httpcomponents-client-4.5.14-bin\\lib\\httpclient-win-4.5.14.jar"))
+//    implementation(files("C:\\Users\\twoone3\\dev\\notes2\\httpcomponents-client-4.5.14-bin\\lib\\httpcore-4.4.16.jar"))
+    implementation("org.apache.httpcomponents:httpclient:4.5.14")
+    implementation("org.apache.httpcomponents:httpcore:4.4.14")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
