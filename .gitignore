@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+/httpcomponents-client-4.5.14-bin/
