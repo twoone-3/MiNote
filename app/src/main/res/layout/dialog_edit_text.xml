@@ -20,4 +20,5 @@
     android:id="@+id/et_foler_name"
     android:layout_width="fill_parent"
     android:hint="@string/hint_foler_name"
-    android:layout_height="fill_parent" />
+    android:layout_height="fill_parent"
+    android:inputType="text"/>

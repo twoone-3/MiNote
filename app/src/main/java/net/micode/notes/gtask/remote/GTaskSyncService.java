@@ -99,7 +99,7 @@ public class GTaskSyncService extends Service {
 
     public void sendBroadcast(String msg) {
         mSyncProgress = msg;
-        Intent intent = new Intent(GTASK_SERVICE_BROADCAST_NAME);
+        Intent intent = new Intent(GTASK_SERVICE_BROADCAST_NAME).setPackage(/* TODO: provide the application ID. For example: */ getPackageName()).setPackage(/* TODO: provide the application ID. For example: */ getPackageName());
         intent.putExtra(GTASK_SERVICE_BROADCAST_IS_SYNCING, mSyncTask != null);
         intent.putExtra(GTASK_SERVICE_BROADCAST_PROGRESS_MSG, msg);
         sendBroadcast(intent);
