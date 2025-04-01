@@ -104,16 +104,8 @@ public class AlarmAlertActivity extends Activity implements OnClickListener, OnD
             mPlayer.prepare();
             mPlayer.setLooping(true);
             mPlayer.start();
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IllegalArgumentException | SecurityException | IllegalStateException |
+                 IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -131,15 +123,11 @@ public class AlarmAlertActivity extends Activity implements OnClickListener, OnD
     }
 
     public void onClick(DialogInterface dialog, int which) {
-        switch (which) {
-            case DialogInterface.BUTTON_NEGATIVE:
-                Intent intent = new Intent(this, NoteEditActivity.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.putExtra(Intent.EXTRA_UID, mNoteId);
-                startActivity(intent);
-                break;
-            default:
-                break;
+        if (which == DialogInterface.BUTTON_NEGATIVE) {
+            Intent intent = new Intent(this, NoteEditActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.putExtra(Intent.EXTRA_UID, mNoteId);
+            startActivity(intent);
         }
     }
 

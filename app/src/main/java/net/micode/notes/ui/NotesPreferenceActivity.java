@@ -18,7 +18,6 @@ package net.micode.notes.ui;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -27,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -35,7 +35,6 @@ import android.preference.PreferenceCategory;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -81,7 +80,8 @@ public class NotesPreferenceActivity extends PreferenceActivity {
         mReceiver = new GTaskReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(GTaskSyncService.GTASK_SERVICE_BROADCAST_NAME);
-        registerReceiver(mReceiver, filter);
+        registerReceiver(mReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+
 
         mOriAccounts = null;
         View header = LayoutInflater.from(this).inflate(R.layout.settings_header, null);

@@ -164,17 +164,12 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
             InputStream in = null;
             try {
                  in = getResources().openRawResource(R.raw.introduction);
-                if (in != null) {
-                    InputStreamReader isr = new InputStreamReader(in);
-                    BufferedReader br = new BufferedReader(isr);
-                    char [] buf = new char[1024];
-                    int len = 0;
-                    while ((len = br.read(buf)) > 0) {
-                        sb.append(buf, 0, len);
-                    }
-                } else {
-                    Log.e(TAG, "Read introduction file error");
-                    return;
+                InputStreamReader isr = new InputStreamReader(in);
+                BufferedReader br = new BufferedReader(isr);
+                char [] buf = new char[1024];
+                int len = 0;
+                while ((len = br.read(buf)) > 0) {
+                    sb.append(buf, 0, len);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -195,7 +190,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                     ResourceParser.RED);
             note.setWorkingText(sb.toString());
             if (note.saveNote()) {
-                sp.edit().putBoolean(PREFERENCE_ADD_INTRODUCTION, true).commit();
+                sp.edit().putBoolean(PREFERENCE_ADD_INTRODUCTION, true).apply();
             } else {
                 Log.e(TAG, "Save introduction note error");
                 return;
