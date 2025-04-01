@@ -16,7 +16,6 @@
 
 package net.micode.notes.data;
 
-
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -34,21 +33,24 @@ import net.micode.notes.data.Notes.DataColumns;
 import net.micode.notes.data.Notes.NoteColumns;
 import net.micode.notes.data.NotesDatabaseHelper.TABLE;
 
-
+/**
+ * NotesProvider 是一个 ContentProvider，用于管理便签应用程序的数据库。
+ * 它提供了对便签和数据表进行 CRUD 操作的方法，并且支持搜索功能。
+ */
 public class NotesProvider extends ContentProvider {
-    private static final UriMatcher mMatcher;
+    private static final UriMatcher mMatcher; // 用于匹配 URI 的 UriMatcher
 
-    private NotesDatabaseHelper mHelper;
+    private NotesDatabaseHelper mHelper; // 数据库帮助类实例
 
-    private static final String TAG = "NotesProvider";
+    private static final String TAG = "NotesProvider"; // 日志标签
 
-    private static final int URI_NOTE            = 1;
-    private static final int URI_NOTE_ITEM       = 2;
-    private static final int URI_DATA            = 3;
-    private static final int URI_DATA_ITEM       = 4;
+    private static final int URI_NOTE = 1; // 便签 URI
+    private static final int URI_NOTE_ITEM = 2; // 便签项 URI
+    private static final int URI_DATA = 3; // 数据 URI
+    private static final int URI_DATA_ITEM = 4; // 数据项 URI
 
-    private static final int URI_SEARCH          = 5;
-    private static final int URI_SEARCH_SUGGEST  = 6;
+    private static final int URI_SEARCH = 5; // 搜索 URI
+    private static final int URI_SEARCH_SUGGEST = 6; // 搜索建议 URI
 
     static {
         mMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -62,8 +64,8 @@ public class NotesProvider extends ContentProvider {
     }
 
     /**
-     * x'0A' represents the '\n' character in sqlite. For title and content in the search result,
-     * we will trim '\n' and white space in order to show more information.
+     * x'0A' 表示 sqlite 中的 '\n' 字符。对于搜索结果中的标题和内容，
+     * 我们将修剪 '\n' 和空白以显示更多信息。
      */
     private static final String NOTES_SEARCH_PROJECTION = NoteColumns.ID + ","
         + NoteColumns.ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA + ","
@@ -114,7 +116,7 @@ public class NotesProvider extends ContentProvider {
             case URI_SEARCH_SUGGEST:
                 if (sortOrder != null || projection != null) {
                     throw new IllegalArgumentException(
-                            "do not specify sortOrder, selection, selectionArgs, or projection" + "with this query");
+                            "不要在此查询中指定 sortOrder、selection、selectionArgs 或 projection");
                 }
 
                 String searchString = null;
@@ -135,11 +137,11 @@ public class NotesProvider extends ContentProvider {
                     c = db.rawQuery(NOTES_SNIPPET_SEARCH_QUERY,
                             new String[] { searchString });
                 } catch (IllegalStateException ex) {
-                    Log.e(TAG, "got exception: " + ex.toString());
+                    Log.e(TAG, "发生异常: " + ex.toString());
                 }
                 break;
             default:
-                throw new IllegalArgumentException("Unknown URI " + uri);
+                throw new IllegalArgumentException("未知 URI " + uri);
         }
         if (c != null) {
             c.setNotificationUri(getContext().getContentResolver(), uri);
@@ -159,20 +161,20 @@ public class NotesProvider extends ContentProvider {
                 if (values.containsKey(DataColumns.NOTE_ID)) {
                     noteId = values.getAsLong(DataColumns.NOTE_ID);
                 } else {
-                    Log.d(TAG, "Wrong data format without note id:" + values.toString());
+                    Log.d(TAG, "数据格式错误，没有便签 ID:" + values.toString());
                 }
                 insertedId = dataId = db.insert(TABLE.DATA, null, values);
                 break;
             default:
-                throw new IllegalArgumentException("Unknown URI " + uri);
+                throw new IllegalArgumentException("未知 URI " + uri);
         }
-        // Notify the note uri
+        // 通知便签 URI
         if (noteId > 0) {
             getContext().getContentResolver().notifyChange(
                     ContentUris.withAppendedId(Notes.CONTENT_NOTE_URI, noteId), null);
         }
 
-        // Notify the data uri
+        // 通知数据 URI
         if (dataId > 0) {
             getContext().getContentResolver().notifyChange(
                     ContentUris.withAppendedId(Notes.CONTENT_DATA_URI, dataId), null);
@@ -195,8 +197,7 @@ public class NotesProvider extends ContentProvider {
             case URI_NOTE_ITEM:
                 id = uri.getPathSegments().get(1);
                 /**
-                 * ID that smaller than 0 is system folder which is not allowed to
-                 * trash
+                 * ID 小于 0 表示系统文件夹，不允许删除
                  */
                 long noteId = Long.valueOf(id);
                 if (noteId <= 0) {
@@ -216,7 +217,7 @@ public class NotesProvider extends ContentProvider {
                 deleteData = true;
                 break;
             default:
-                throw new IllegalArgumentException("Unknown URI " + uri);
+                throw new IllegalArgumentException("未知 URI " + uri);
         }
         if (count > 0) {
             if (deleteData) {
@@ -255,7 +256,7 @@ public class NotesProvider extends ContentProvider {
                 updateData = true;
                 break;
             default:
-                throw new IllegalArgumentException("Unknown URI " + uri);
+                throw new IllegalArgumentException("未知 URI " + uri);
         }
 
         if (count > 0) {
@@ -298,7 +299,7 @@ public class NotesProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        // TODO Auto-generated method stub
+        // TODO 自动生成方法存根
         return null;
     }
 
