@@ -26,7 +26,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -297,7 +296,7 @@ public class NotesPreferenceActivity extends PreferenceActivity {
             } else {
                 editor.putString(PREFERENCE_SYNC_ACCOUNT_NAME, "");
             }
-            editor.commit();
+            editor.apply();
 
             // clean up last sync time
             setLastSyncTime(this, 0);
@@ -327,7 +326,7 @@ public class NotesPreferenceActivity extends PreferenceActivity {
         if (settings.contains(PREFERENCE_LAST_SYNC_TIME)) {
             editor.remove(PREFERENCE_LAST_SYNC_TIME);
         }
-        editor.commit();
+        editor.apply();
 
         // clean up local gtask related info
         new Thread(new Runnable() {

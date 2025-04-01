@@ -33,9 +33,9 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 4;
 
     public interface TABLE {
-        public static final String NOTE = "note";
+        String NOTE = "note";
 
-        public static final String DATA = "data";
+        String DATA = "data";
     }
 
     private static final String TAG = "NotesDatabaseHelper";
@@ -172,7 +172,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
         " END";
 
     /**
-     * Delete datas belong to note which has been deleted
+     * Delete data belong to note which has been deleted
      */
     private static final String NOTE_DELETE_DATA_ON_DELETE_TRIGGER =
         "CREATE TRIGGER delete_data_on_delete " +
@@ -238,14 +238,14 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     private void createSystemFolder(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
 
-        /**
-         * call record foler for call notes
+        /*
+         * call record folder for call notes
          */
         values.put(NoteColumns.ID, Notes.ID_CALL_RECORD_FOLDER);
         values.put(NoteColumns.TYPE, Notes.TYPE_SYSTEM);
         db.insert(TABLE.NOTE, null, values);
 
-        /**
+        /*
          * root folder which is default folder
          */
         values.clear();
@@ -253,7 +253,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
         values.put(NoteColumns.TYPE, Notes.TYPE_SYSTEM);
         db.insert(TABLE.NOTE, null, values);
 
-        /**
+        /*
          * temporary folder which is used for moving note
          */
         values.clear();
@@ -261,8 +261,8 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
         values.put(NoteColumns.TYPE, Notes.TYPE_SYSTEM);
         db.insert(TABLE.NOTE, null, values);
 
-        /**
-         * create trash folder
+        /*
+          create trash folder
          */
         values.clear();
         values.put(NoteColumns.ID, Notes.ID_TRASH_FOLER);
