@@ -15,7 +15,6 @@
  */
 
 package net.micode.notes.model;
-
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentUris;
@@ -34,16 +33,16 @@ import net.micode.notes.data.Notes.TextNote;
 
 import java.util.ArrayList;
 
-public class Note {
-    private ContentValues mNoteDiffValues; // 存储笔记的修改值
-    private NoteData mNoteData; // 存储笔记的数据
-    private static final String TAG = "Note"; // 日志标签
 
+public class Note {
+    private ContentValues mNoteDiffValues;
+    private NoteData mNoteData;
+    private static final String TAG = "Note";
     /**
-     * 创建一个新的笔记ID以便将新笔记添加到数据库中
+     * Create a new note id for adding a new note to databases
      */
     public static synchronized long getNewNoteId(Context context, long folderId) {
-        // 在数据库中创建一个新笔记
+        // Create a new note in the database
         ContentValues values = new ContentValues();
         long createdTime = System.currentTimeMillis();
         values.put(NoteColumns.CREATED_DATE, createdTime);
@@ -57,11 +56,11 @@ public class Note {
         try {
             noteId = Long.valueOf(uri.getPathSegments().get(1));
         } catch (NumberFormatException e) {
-            Log.e(TAG, "获取笔记ID错误：" + e.toString());
+            Log.e(TAG, "Get note id error :" + e.toString());
             noteId = 0;
         }
         if (noteId == -1) {
-            throw new IllegalStateException("错误的笔记ID：" + noteId);
+            throw new IllegalStateException("Wrong note id:" + noteId);
         }
         return noteId;
     }
@@ -103,7 +102,7 @@ public class Note {
 
     public boolean syncNote(Context context, long noteId) {
         if (noteId <= 0) {
-            throw new IllegalArgumentException("错误的笔记ID：" + noteId);
+            throw new IllegalArgumentException("Wrong note id:" + noteId);
         }
 
         if (!isLocalModified()) {
@@ -111,15 +110,15 @@ public class Note {
         }
 
         /**
-         * 理论上，一旦数据发生变化，笔记应该在 {@link NoteColumns#LOCAL_MODIFIED} 和
-         * {@link NoteColumns#MODIFIED_DATE} 上更新。为了数据安全，尽管更新笔记失败，我们也会更新
-         * 笔记数据信息
+         * In theory, once data changed, the note should be updated on {@link NoteColumns#LOCAL_MODIFIED} and
+         * {@link NoteColumns#MODIFIED_DATE}. For data safety, though update note fails, we also update the
+         * note data info
          */
         if (context.getContentResolver().update(
                 ContentUris.withAppendedId(Notes.CONTENT_NOTE_URI, noteId), mNoteDiffValues, null,
                 null) == 0) {
-            Log.e(TAG, "更新笔记错误，不应发生");
-            // 不要返回，继续执行
+            Log.e(TAG, "Update note error, should not happen");
+            // Do not return, fall through
         }
         mNoteDiffValues.clear();
 
@@ -155,14 +154,14 @@ public class Note {
 
         void setTextDataId(long id) {
             if(id <= 0) {
-                throw new IllegalArgumentException("文本数据ID应大于0");
+                throw new IllegalArgumentException("Text data id should larger than 0");
             }
             mTextDataId = id;
         }
 
         void setCallDataId(long id) {
             if (id <= 0) {
-                throw new IllegalArgumentException("通话数据ID应大于0");
+                throw new IllegalArgumentException("Call data id should larger than 0");
             }
             mCallDataId = id;
         }
@@ -181,10 +180,10 @@ public class Note {
 
         Uri pushIntoContentResolver(Context context, long noteId) {
             /**
-             * 安全检查
+             * Check for safety
              */
             if (noteId <= 0) {
-                throw new IllegalArgumentException("错误的笔记ID：" + noteId);
+                throw new IllegalArgumentException("Wrong note id:" + noteId);
             }
 
             ArrayList<ContentProviderOperation> operationList = new ArrayList<ContentProviderOperation>();
@@ -199,7 +198,7 @@ public class Note {
                     try {
                         setTextDataId(Long.valueOf(uri.getPathSegments().get(1)));
                     } catch (NumberFormatException e) {
-                        Log.e(TAG, "插入新文本数据失败，noteId：" + noteId);
+                        Log.e(TAG, "Insert new text data fail with noteId" + noteId);
                         mTextDataValues.clear();
                         return null;
                     }
@@ -221,7 +220,7 @@ public class Note {
                     try {
                         setCallDataId(Long.valueOf(uri.getPathSegments().get(1)));
                     } catch (NumberFormatException e) {
-                        Log.e(TAG, "插入新通话数据失败，noteId：" + noteId);
+                        Log.e(TAG, "Insert new call data fail with noteId" + noteId);
                         mCallDataValues.clear();
                         return null;
                     }
