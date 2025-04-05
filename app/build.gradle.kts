@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "net.micode.notes"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "net.micode.notes"
