@@ -8,6 +8,8 @@ appcompat = "1.6.1"
 material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
+toaster = "12.8"
+xxpermissions = "21.0"
 
 [libraries]
 httpclient = { module = "org.apache.httpcomponents:httpclient", version.ref = "httpclient" }
@@ -18,6 +20,8 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+toaster = { module = "com.github.getActivity:Toaster", version.ref = "toaster" }
+xxpermissions = { module = "com.github.getActivity:XXPermissions", version.ref = "xxpermissions" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
